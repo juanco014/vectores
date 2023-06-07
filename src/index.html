@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Transformada de Fourier</title>
+  <script src="
+  https://cdn.jsdelivr.net/npm/chart.js"></script> 
+</head>
+<body>
+  <canvas id="grafico fft" width= 100pw; height=50px;></canvas>
+
+  <script>
+    fetch('http://localhost:8080/fft')
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(data) {
+        var ctx = document.getElementById('grafico fft').getContext('2d');
+        new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: data.fases.map(function(_, index) { return index.toString(); }),
+            datasets: [{
+              label: 'MAGNITUDES',
+              data: data.magnitudes,
+              backgroundColor: [
+                                'rgb(54,162,235,1)',      
+                              ],
+              borderColor: [
+                                'rgb(0,0,0,1)',
+                              ],
+              tension: .6,
+              pointRadius: 10,
+              fill:true
+            }]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+      })
+      .catch(function(error) {
+        console.log('Error al obtener los datos:', error);
+      });
+  </script>
+</body>
+</html>
